@@ -17,14 +17,21 @@ public class Main {
 			System.out.println("Enter a number to read: ");
 			try {
 				maxStr = br.readLine();
-
+				String dollarSufficx = " dollars";
 				double number;
 				try {
 					number = Double.parseDouble(maxStr);
 					if (number < 0) {
 						throw new NumberFormatException();
 					}
-					System.out.println(numberToString(maxStr).trim());
+					if (Math.ceil(number) <= 1.0) {
+						dollarSufficx = " dollar";
+					}
+					if (Math.ceil(number) == 0.0) {
+						System.out.println("zero" + dollarSufficx);
+					} else {
+						System.out.println(numberToString(maxStr).trim() + dollarSufficx);
+					}
 				} catch (NumberFormatException e) {
 					System.out.println("Wrong input. Try again...");
 				}
@@ -49,6 +56,7 @@ public class Main {
 		int decimalIndex = number.indexOf(".");
 		String integerPart = decimalIndex >= 0 ? number.substring(0, decimalIndex) : number;
 		String decimalpart = decimalIndex >= 0 ? number.substring(decimalIndex + 1) : "";
+		double decimalNumber = Math.ceil(Double.parseDouble(decimalpart));
 		int chunkCounter = 0;
 		String integerString = "", chunk = "", unreadChunk = "";
 		
@@ -85,10 +93,10 @@ public class Main {
 			decimalDenominator += "0";
 		}
 
-		String decimalString = decimalPlacess > 0 ? decimalpart + "/" + decimalDenominator : "";
+		String decimalString = (decimalPlacess > 0 && decimalNumber > 0.0)? decimalpart + "/" + decimalDenominator : "";
 
 		String result = integerString.length() > 0 ? (decimalString.length() > 0 ? integerString + "and " + decimalString : integerString) : decimalString;
-
+		result += " ";
 		return result;
 	}
 
@@ -147,6 +155,8 @@ public class Main {
 
 	public static String convertToReadString(String n) {
 		switch (n) {
+//		case "0":
+//			return "zero";
 		case "1":
 			return "one";
 		case "2":
